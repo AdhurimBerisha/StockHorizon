@@ -22,7 +22,7 @@ const DesignPage = (props: Props) => {
         This is CryptoCash's design page. This is where we will house various
         design aspects of the app
       </h2>
-      <Table />
+      <Table data={testIncomeStatementData} config={tableConfig} />
     </>
   );
 };
