@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.DTos.Stock;
+using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,15 +16,17 @@ namespace api.Controllers
     public class StockController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public StockController(ApplicationDBContext context)
+        private readonly IStockRepository _stockRepo;
+        public StockController(ApplicationDBContext context, IStockRepository stockRepo)
         {
+            _stockRepo = stockRepo;
             _context = context;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var stocks = await  _context.Stocks.ToListAsync();
+            var stocks = await _stockRepo.GetAllAsync();
 
             var stockDto = stocks.Select(s => s.ToStockDto());
 
@@ -35,7 +38,7 @@ namespace api.Controllers
         {
             var stock = await _context.Stocks.FindAsync(id);
 
-            if(stock == null)
+            if (stock == null)
             {
                 return NotFound();
             }
@@ -49,7 +52,7 @@ namespace api.Controllers
             var stockModel = stockDto.ToStockFromCreateDTO();
             await _context.Stocks.AddAsync(stockModel);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new {id=stockModel.Id}, stockModel.ToStockDto());
+            return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
         }
 
         [HttpPut]
@@ -58,7 +61,7 @@ namespace api.Controllers
         {
             var stockModel = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(stockModel == null)
+            if (stockModel == null)
             {
                 return NotFound();
             }
@@ -79,9 +82,9 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var stockModel = await  _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
+            var stockModel = await _context.Stocks.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(stockModel == null)
+            if (stockModel == null)
             {
                 return NotFound();
             }
