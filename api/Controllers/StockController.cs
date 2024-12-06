@@ -79,6 +79,10 @@ namespace api.Controllers
                 return NotFound();
             }
 
+            _context.Stocks.Remove(stockModel);
+
+            await _context.SaveChangesAsync();
+
             return NoContent();
         }
 
