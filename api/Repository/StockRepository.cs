@@ -37,10 +37,8 @@ namespace api.Repository
                 return null;
             }
 
-            // Delete related comments first
             _context.Comments.RemoveRange(stockModel.Comments);
 
-            // Then delete the stock
             _context.Stocks.Remove(stockModel);
             await _context.SaveChangesAsync();
             return stockModel;
@@ -69,7 +67,11 @@ namespace api.Repository
                 }
             }
 
-            return await stocks.ToListAsync();
+            var skipNumber = (query.PageNumber - 1) * query.PageSize;
+
+
+
+            return await stocks.Skip(skipNumber).Take(query.PageSize).ToListAsync();
         }
 
         public async Task<Stock?> GetByIdAsync(int id)
