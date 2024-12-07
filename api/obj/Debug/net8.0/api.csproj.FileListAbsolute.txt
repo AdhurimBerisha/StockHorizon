@@ -140,3 +140,5 @@ C:\Users\aadhu\OneDrive\Desktop\CryptoCash\api\bin\Debug\net8.0\Microsoft.AspNet
 C:\Users\aadhu\OneDrive\Desktop\CryptoCash\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\aadhu\OneDrive\Desktop\CryptoCash\api\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\aadhu\OneDrive\Desktop\CryptoCash\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
+C:\Users\aadhu\OneDrive\Desktop\CryptoCash\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\aadhu\OneDrive\Desktop\CryptoCash\api\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
