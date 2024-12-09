@@ -31,7 +31,7 @@ namespace api.Mappers
                 StockId = stockId
             };
         }
-        public static Comment ToCommentFromUpdate(this UpdateCommentRequestDto commentDto)
+        public static Comment ToCommentFromUpdate(this UpdateCommentRequestDto commentDto, int id)
         {
             return new Comment
             {
