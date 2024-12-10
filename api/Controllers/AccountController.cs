@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.DTos.Account;
+using api.Dtos.Account;
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,12 +17,12 @@ namespace api.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
-        private readonly SignInManager<AppUser> _signInManager;
+        private readonly SignInManager<AppUser> _signinManager;
         public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
-            _signInManager = signInManager;
+            _signinManager = signInManager;
         }
 
         [HttpPost("login")]
@@ -35,14 +35,14 @@ namespace api.Controllers
 
             if (user == null) return Unauthorized("Invalid username!");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
 
             return Ok(
                 new NewUserDto
                 {
-                    Username = user.UserName,
+                    UserName = user.UserName,
                     Email = user.Email,
                     Token = _tokenService.CreateToken(user)
                 }
@@ -60,7 +60,7 @@ namespace api.Controllers
                 var appUser = new AppUser
                 {
                     UserName = registerDto.Username,
-                    Email = registerDto.Email,
+                    Email = registerDto.Email
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
@@ -73,7 +73,7 @@ namespace api.Controllers
                         return Ok(
                             new NewUserDto
                             {
-                                Username = appUser.UserName,
+                                UserName = appUser.UserName,
                                 Email = appUser.Email,
                                 Token = _tokenService.CreateToken(appUser)
                             }
