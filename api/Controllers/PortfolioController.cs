@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using api.Extensions;
 using api.Interfaces;
 using api.Models;
-using api.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +52,7 @@ namespace api.Controllers
                 stock = await _fmpService.FindStockBySymbolAsync(symbol);
                 if (stock == null)
                 {
-                    return BadRequest("Stock does not exist");
+                    return BadRequest("Stock does not exists");
                 }
                 else
                 {
@@ -84,6 +83,7 @@ namespace api.Controllers
                 return Created();
             }
         }
+
         [HttpDelete]
         [Authorize]
         public async Task<IActionResult> DeletePortfolio(string symbol)

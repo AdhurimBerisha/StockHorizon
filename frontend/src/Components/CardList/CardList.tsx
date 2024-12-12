@@ -13,7 +13,7 @@ const CardList: React.FC<Props> = ({
   onPortfolioCreate,
 }: Props): JSX.Element => {
   return (
-    <>
+    <div>
       {searchResults.length > 0 ? (
         searchResults.map((result) => {
           return (
@@ -30,7 +30,7 @@ const CardList: React.FC<Props> = ({
           No results!
         </p>
       )}
-    </>
+    </div>
   );
 };
 

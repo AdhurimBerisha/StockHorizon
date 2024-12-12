@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Stock;
-using api.DTos.Stock;
 using api.Models;
 
 namespace api.Mappers
@@ -37,6 +36,7 @@ namespace api.Mappers
                 MarketCap = stockDto.MarketCap
             };
         }
+
         public static Stock ToStockFromFMP(this FMPStock fmpStock)
         {
             return new Stock

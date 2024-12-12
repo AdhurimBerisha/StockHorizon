@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
-using api.DTos.Stock;
+using api.Dtos.Stock;
 using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
@@ -31,6 +31,7 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             var stocks = await _stockRepo.GetAllAsync(query);
 
             var stockDto = stocks.Select(s => s.ToStockDto()).ToList();
@@ -43,6 +44,7 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             var stock = await _stockRepo.GetByIdAsync(id);
 
             if (stock == null)
@@ -58,8 +60,11 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             var stockModel = stockDto.ToStockFromCreateDTO();
+
             await _stockRepo.CreateAsync(stockModel);
+
             return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
         }
 
@@ -69,6 +74,7 @@ namespace api.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             var stockModel = await _stockRepo.UpdateAsync(id, updateDto);
 
             if (stockModel == null)

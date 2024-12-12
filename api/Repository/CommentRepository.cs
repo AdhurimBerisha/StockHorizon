@@ -47,7 +47,7 @@ namespace api.Repository
             {
                 comments = comments.Where(s => s.Stock.Symbol == queryObject.Symbol);
             };
-            if (queryObject.IsDescending == true)
+            if (queryObject.IsDecsending == true)
             {
                 comments = comments.OrderByDescending(c => c.CreatedOn);
             }

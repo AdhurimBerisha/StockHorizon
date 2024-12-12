@@ -1,10 +1,10 @@
 import React from "react";
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
   ticker: string;
-};
+}
 
 const CompanyDashboard = ({ children, ticker }: Props) => {
   return (

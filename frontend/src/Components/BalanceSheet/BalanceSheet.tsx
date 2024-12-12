@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { CompanyBalanceSheet, CompanyCashFlow } from "../../company";
-import { useOutletContext } from "react-router";
-import { getBalanceSheet } from "../../api";
+import { CompanyBalanceSheet } from "../../company";
+import { useOutletContext } from "react-router-dom";
 import RatioList from "../RatioList/RatioList";
+import { getBalanceSheet } from "../../api";
+import Table from "../Table/Table";
 import Spinner from "../Spinner/Spinner";
-import { formatLargeMonetaryNumber } from "../../Helpers/NumberFormatting";
+import {
+  formatLargeMonetaryNumber,
+  formatLargeNonMonetaryNumber,
+} from "../../Helpers/NumberFormatting";
 
 type Props = {};
 
@@ -78,18 +82,18 @@ const config = [
 
 const BalanceSheet = (props: Props) => {
   const ticker = useOutletContext<string>();
-  const [balanceSheet, setBalanceSheet] = useState<CompanyBalanceSheet>();
+  const [companyData, setCompanyData] = useState<CompanyBalanceSheet>();
   useEffect(() => {
-    const getData = async () => {
+    const getCompanyData = async () => {
       const value = await getBalanceSheet(ticker!);
-      setBalanceSheet(value?.data[0]);
+      setCompanyData(value?.data[0]);
     };
-    getData();
+    getCompanyData();
   }, []);
   return (
     <>
-      {balanceSheet ? (
-        <RatioList config={config} data={balanceSheet} />
+      {companyData ? (
+        <RatioList config={config} data={companyData} />
       ) : (
         <Spinner />
       )}

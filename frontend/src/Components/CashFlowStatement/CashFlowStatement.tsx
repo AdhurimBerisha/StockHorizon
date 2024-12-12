@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { CompanyCashFlow } from "../../company";
-import { useOutletContext } from "react-router";
 import { getCashFlowStatement } from "../../api";
 import Table from "../Table/Table";
 import Spinner from "../Spinner/Spinner";
@@ -52,25 +52,21 @@ const config = [
   },
 ];
 
-const CashFlowStatement = (props: Props) => {
+const CashflowStatement = (props: Props) => {
   const ticker = useOutletContext<string>();
-  const [cashflowData, setCashflowData] = useState<CompanyCashFlow[]>();
+  const [cashFlowData, setCashFlowData] = useState<CompanyCashFlow[]>();
   useEffect(() => {
-    const fetchCashflow = async () => {
-      const result = await getCashFlowStatement(ticker!);
-      setCashflowData(result!.data);
+    const getRatios = async () => {
+      const result = await getCashFlowStatement(ticker);
+      setCashFlowData(result!.data);
     };
-    fetchCashflow();
+    getRatios();
   }, []);
-  return (
-    <>
-      {cashflowData ? (
-        <Table config={config} data={cashflowData} />
-      ) : (
-        <Spinner />
-      )}
-    </>
+  return cashFlowData ? (
+    <Table config={config} data={cashFlowData}></Table>
+  ) : (
+    <Spinner />
   );
 };
 
-export default CashFlowStatement;
+export default CashflowStatement;
