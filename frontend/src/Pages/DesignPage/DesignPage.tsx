@@ -16,10 +16,10 @@ const tableConfig = [
 const DesignPage = (props: Props) => {
   return (
     <>
-      <h1>CryptoCash Design Page</h1>
+      <h1>StockHorizon Design Page</h1>
       <RatioList data={testIncomeStatementData} config={tableConfig} />
       <h2>
-        This is CryptoCash's design page. This is where we will house various
+        This is StockHorizon's design page. This is where we will house various
         design aspects of the app
       </h2>
       <Table data={testIncomeStatementData} config={tableConfig} />
