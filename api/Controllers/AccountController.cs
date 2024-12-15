@@ -31,68 +31,55 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
-
+            // Fetch user by username (case-insensitive)
+            var user = await _userManager.FindByNameAsync(loginDto.Username.ToLower());
             if (user == null) return Unauthorized("Invalid username!");
 
+            // Verify password
             var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
+            if (!result.Succeeded) return Unauthorized("Username or password incorrect");
 
-            if (!result.Succeeded) return Unauthorized("Username not found and/or password incorrect");
+            // Fetch user roles
+            var roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(
-                new NewUserDto
-                {
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    Token = _tokenService.CreateToken(user)
-                }
-            );
+            return Ok(new NewUserDto
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Token = _tokenService.CreateToken(user),
+                Role = roles.FirstOrDefault() ?? "User"
+            });
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register(RegisterDto registerDto)
         {
-            try
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var appUser = new AppUser
             {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+                UserName = registerDto.Username,
+                Email = registerDto.Email
+            };
 
-                var appUser = new AppUser
-                {
-                    UserName = registerDto.Username,
-                    Email = registerDto.Email
-                };
+            var result = await _userManager.CreateAsync(appUser, registerDto.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
 
-                var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
+            // Assign role from the DTO or default to "User"
+            var role = string.IsNullOrEmpty(registerDto.Role) ? "User" : registerDto.Role;
+            var roleResult = await _userManager.AddToRoleAsync(appUser, role);
+            if (!roleResult.Succeeded)
+                return BadRequest(roleResult.Errors);
 
-                if (createdUser.Succeeded)
-                {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
-                    if (roleResult.Succeeded)
-                    {
-                        return Ok(
-                            new NewUserDto
-                            {
-                                UserName = appUser.UserName,
-                                Email = appUser.Email,
-                                Token = _tokenService.CreateToken(appUser)
-                            }
-                        );
-                    }
-                    else
-                    {
-                        return StatusCode(500, roleResult.Errors);
-                    }
-                }
-                else
-                {
-                    return StatusCode(500, createdUser.Errors);
-                }
-            }
-            catch (Exception e)
+            return Ok(new NewUserDto
             {
-                return StatusCode(500, e);
-            }
+                UserName = appUser.UserName,
+                Email = appUser.Email,
+                Token = _tokenService.CreateToken(appUser),
+                Role = role
+            });
         }
     }
 }

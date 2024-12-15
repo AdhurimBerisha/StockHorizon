@@ -39,7 +39,8 @@ export const UserProvider = ({ children }: Props) => {
   const registerUser = async (
     email: string,
     username: string,
-    password: string
+    password: string,
+    role?: string
   ) => {
     await registerAPI(email, username, password)
       .then((res) => {
@@ -48,6 +49,7 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             userName: res?.data.userName,
             email: res?.data.email,
+            role: res?.data.role || "User",
           };
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
@@ -67,10 +69,15 @@ export const UserProvider = ({ children }: Props) => {
           const userObj = {
             userName: res?.data.userName,
             email: res?.data.email,
+            role: res?.data.role,
           };
           localStorage.setItem("user", JSON.stringify(userObj));
           setToken(res?.data.token!);
           setUser(userObj!);
+
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + res?.data.token;
+
           toast.success("Login Success!");
           navigate("/search");
         }
