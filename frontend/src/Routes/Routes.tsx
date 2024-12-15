@@ -11,6 +11,7 @@ import LoginPage from "../Pages/LoginPage/LoginPage";
 import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
 import CashflowStatement from "../Components/CashFlowStatement/CashFlowStatement";
+import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { path: "", element: <HomePage /> },
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
+      { path: "dashboard", element: <AdminDashboard /> },
       {
         path: "search",
         element: (
