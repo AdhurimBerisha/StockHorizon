@@ -2,6 +2,7 @@ import React from "react";
 import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
 import Tile from "../../Components/AdminTile/AdminTile"; // Import the Tile component
 import AdminList from "../../Components/AdminList/AdminList"; // Import the AdminList component
+import ToDoList from "../../Components/ToDoList/ToDoList"; // Import the ToDoList component
 import { FaUser, FaChartBar, FaCog, FaFileAlt } from "react-icons/fa";
 
 type Props = {};
@@ -28,12 +29,9 @@ const AdminDashboard = (props: Props) => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
       <AdminSidebar />
 
-      {/* Main Content */}
       <div className="flex-1 p-6 overflow-y-auto">
-        {/* Dashboard Title */}
         <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
 
         {/* Tiles Section */}
@@ -44,11 +42,16 @@ const AdminDashboard = (props: Props) => {
           <Tile title="Most Used Stock" value="AAPL" icon={<FaChartBar />} />
         </div>
 
-        {/* Admin Lists Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Lists Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           <AdminList title="Recent Users" items={recentUsers} />
           <AdminList title="Recent Comments" items={recentComments} />
           <AdminList title="Most Used Stocks" items={mostUsedStocks} />
+        </div>
+
+        {/* To-Do List Section */}
+        <div className="grid grid-cols-1">
+          <ToDoList />
         </div>
       </div>
     </div>
