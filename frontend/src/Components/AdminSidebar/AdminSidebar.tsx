@@ -12,13 +12,16 @@ const AdminSidebar = (props: Props) => {
       </div>
       <ul className="space-y-2">
         <li>
-          <Link to="" className="block py-2 px-4 rounded-md hover:bg-gray-700">
+          <Link
+            to="/dashboard"
+            className="block py-2 px-4 rounded-md hover:bg-gray-700"
+          >
             Dashboard
           </Link>
         </li>
         <li>
           <Link
-            to="/admin/users"
+            to="/dashboard/manage-users"
             className="block py-2 px-4 rounded-md hover:bg-gray-700"
           >
             Manage Users

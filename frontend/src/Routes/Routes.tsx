@@ -12,6 +12,7 @@ import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 import ProtectedRoute from "./ProtectedRoute";
 import CashflowStatement from "../Components/CashFlowStatement/CashFlowStatement";
 import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
+import ManageUsers from "../Pages/ManageUsers/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
       { path: "dashboard", element: <AdminDashboard /> },
+      { path: "/dashboard/manage-users", element: <ManageUsers /> },
       {
         path: "search",
         element: (
