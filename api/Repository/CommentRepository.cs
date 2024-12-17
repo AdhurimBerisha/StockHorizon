@@ -56,7 +56,7 @@ namespace api.Repository
 
         public async Task<Comment?> GetByIdAsync(int id)
         {
-            return await _context.Comments.Include(a => a.AppUser).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Comments.Include(a => a.AppUser).Include(c => c.Stock).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Comment?> UpdateAsync(int id, Comment commentModel)

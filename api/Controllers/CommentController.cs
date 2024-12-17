@@ -32,6 +32,7 @@ namespace api.Controllers
             _fmpService = fmpService;
         }
 
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] CommentQueryObject queryObject)
