@@ -13,6 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import CashflowStatement from "../Components/CashFlowStatement/CashFlowStatement";
 import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
 import ManageUsers from "../Pages/ManageUsers/ManageUsers";
+import ManageComments from "../Pages/ManageComments/ManageComments";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ export const router = createBrowserRouter([
       { path: "register", element: <RegisterPage /> },
       { path: "dashboard", element: <AdminDashboard /> },
       { path: "/dashboard/manage-users", element: <ManageUsers /> },
+      { path: "/dashboard/manage-comments", element: <ManageComments /> },
       {
         path: "search",
         element: (

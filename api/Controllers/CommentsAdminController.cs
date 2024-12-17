@@ -36,17 +36,32 @@ namespace api.Controllers
 
         // Get all comments
         [HttpGet]
-        public async Task<IActionResult> GetComments([FromQuery] CommentQueryObject queryObject)
+        public async Task<IActionResult> GetComments()
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var comments = await _commentRepo.GetAllAsync(queryObject);
+            try
+            {
+                // Create a default (empty) CommentQueryObject
+                var queryObject = new CommentQueryObject();
 
-            var commentDto = comments.Select(s => s.ToCommentDto());
+                // Fetch all comments from the repository using the empty query object
+                var comments = await _commentRepo.GetAllAsync(queryObject);
 
-            return Ok(commentDto);
+                // Map the comments to DTOs for the response
+                var commentDtos = comments.Select(s => s.ToCommentDto()).ToList();
+
+                return Ok(commentDtos); // Return the list of comments
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if necessary and return a server error response
+                return StatusCode(500, "Internal server error: " + ex.Message);
+            }
         }
+
+
 
         // Get comment by ID
         [HttpGet("{id:int}")]

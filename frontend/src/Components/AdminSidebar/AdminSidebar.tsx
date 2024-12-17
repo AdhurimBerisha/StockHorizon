@@ -29,7 +29,7 @@ const AdminSidebar = (props: Props) => {
         </li>
         <li>
           <Link
-            to="/admin/roles"
+            to="/dashboard/manage-comments"
             className="block py-2 px-4 rounded-md hover:bg-gray-700"
           >
             Manage Comments
