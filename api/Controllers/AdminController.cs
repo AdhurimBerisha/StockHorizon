@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Account;
+using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +15,61 @@ namespace api.Controllers
     public class AdminController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ITokenService _tokenService;
 
-        public AdminController(UserManager<AppUser> userManager)
+        // Ensure only one constructor with dependencies
+        public AdminController(UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(RegisterDto registerDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Check if the username or email already exists
+            var existingUser = await _userManager.FindByNameAsync(registerDto.Username);
+            if (existingUser != null)
+            {
+                return BadRequest("Username is already taken.");
+            }
+
+            existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+            if (existingUser != null)
+            {
+                return BadRequest("Email is already taken.");
+            }
+
+            // Create the new user
+            var appUser = new AppUser
+            {
+                UserName = registerDto.Username,
+                Email = registerDto.Email
+            };
+
+            var result = await _userManager.CreateAsync(appUser, registerDto.Password);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            // Assign role from the DTO or default to "User"
+            var role = string.IsNullOrEmpty(registerDto.Role) ? "User" : registerDto.Role;
+            var roleResult = await _userManager.AddToRoleAsync(appUser, role);
+            if (!roleResult.Succeeded)
+                return BadRequest(roleResult.Errors);
+
+            // Generate the token for the user
+            var token = _tokenService.CreateToken(appUser);
+
+            return Ok(new NewUserDto
+            {
+                UserName = appUser.UserName,
+                Email = appUser.Email,
+                Token = token,
+                Role = role
+            });
         }
 
         [HttpGet("users")]
