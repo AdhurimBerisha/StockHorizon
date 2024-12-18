@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
 import UserTable from "../../Components/UsersTable/UsersTable";
-import { FaUser } from "react-icons/fa";
-import EditUser from "../../Components/EditUser/EditUser";
+import { FaUser, FaPlus } from "react-icons/fa";
 import axios from "axios";
+import RegisterUser from "../../Components/RegisterUser/RegisterUser";
+import EditUser from "../../Components/EditUser/EditUser";
 
 type User = {
   id: string;
@@ -15,6 +16,7 @@ type User = {
 const ManageUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -47,6 +49,20 @@ const ManageUsers = () => {
     }
   };
 
+  const handleCloseRegisterModal = () => {
+    setShowRegisterModal(false);
+  };
+
+  const handleUserCreated = async () => {
+    setShowRegisterModal(false);
+    try {
+      const response = await axios.get("http://localhost:5067/api/admin/users");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error refetching users", error);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       <AdminSidebar />
@@ -56,6 +72,14 @@ const ManageUsers = () => {
           <FaUser className="mr-3" />
           Manage Users
         </h2>
+
+        <button
+          onClick={() => setShowRegisterModal(true)}
+          className="mb-4 bg-green-500 text-white py-2 px-4 rounded-md flex items-center"
+        >
+          <FaPlus className="mr-2" />
+          Register User
+        </button>
 
         <UserTable
           users={users}
@@ -70,6 +94,13 @@ const ManageUsers = () => {
             onUserUpdated={() => {
               setEditingUserId(null);
             }}
+          />
+        )}
+
+        {showRegisterModal && (
+          <RegisterUser
+            onClose={handleCloseRegisterModal}
+            onUserCreated={handleUserCreated}
           />
         )}
       </div>
