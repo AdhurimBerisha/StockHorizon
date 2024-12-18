@@ -1,10 +1,9 @@
 import React from "react";
 
-// Define the props type
 type TileProps = {
   title: string;
   value: string;
-  icon: React.ReactNode; // Define icon as a React element
+  icon: React.ReactNode;
 };
 
 const AdminTile: React.FC<TileProps> = ({ title, value, icon }) => {

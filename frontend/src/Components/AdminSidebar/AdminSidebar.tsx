@@ -37,7 +37,7 @@ const AdminSidebar = (props: Props) => {
         </li>
         <li>
           <Link
-            to="/admin/reports"
+            to="/dashboard/portfolios"
             className="block py-2 px-4 rounded-md hover:bg-gray-700"
           >
             Portfolios

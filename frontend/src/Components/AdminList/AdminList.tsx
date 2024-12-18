@@ -2,7 +2,15 @@ import React from "react";
 
 type AdminListProps = {
   title: string;
-  items: { id: number; name: string; description?: string; email?: string }[];
+  items: {
+    id: number;
+    userName?: string;
+    email?: string;
+    createdBy?: string;
+    content?: string;
+    symbol?: string;
+    companyName?: string;
+  }[];
 };
 
 const AdminList = ({ title, items }: AdminListProps) => {
@@ -12,11 +20,32 @@ const AdminList = ({ title, items }: AdminListProps) => {
       <ul>
         {items.map((item) => (
           <li key={item.id} className="border-b last:border-b-0 py-2">
-            <p className="text-gray-800 font-semibold">{item.name}</p>
-            {item.email ? (
-              <p className="text-gray-600 text-sm">{item.email}</p>
-            ) : (
-              <p className="text-gray-600 text-sm">{item.description}</p>
+            {/* For Recent Users: Display email and username */}
+            {item.email && item.userName ? (
+              <>
+                <p className="text-gray-800 font-semibold">{item.email}</p>
+                <p className="text-gray-600 text-sm">{item.userName}</p>
+              </>
+            ) : null}
+
+            {/* For Recent Comments: Display content and createdBy */}
+            {item.content ? (
+              <p className="text-gray-800 text-sm mt-2 font-semibold">
+                {item.content}
+              </p>
+            ) : null}
+            {item.createdBy && item.content && (
+              <p className="text-gray-500 text-xs mt-2">
+                Posted by: {item.createdBy}
+              </p>
+            )}
+
+            {/* For Most Used Stocks: Display symbol first, then companyName */}
+            {item.symbol && item.companyName && (
+              <>
+                <p className="text-gray-800 font-semibold">{item.symbol}</p>
+                <p className="text-gray-600 text-sm">{item.companyName}</p>
+              </>
             )}
           </li>
         ))}

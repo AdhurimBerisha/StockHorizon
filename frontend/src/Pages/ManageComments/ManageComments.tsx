@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
-import CommentTable from "../../Components/CommentsTable/CommentsTable"; // You may need to create this component similar to UserTable
+import CommentTable from "../../Components/CommentsTable/CommentsTable";
 import { FaComment } from "react-icons/fa";
-import EditComment from "../../Components/EditComments/EditComments"; // You may need to create this component similar to EditUser
+import EditComment from "../../Components/EditComments/EditComments";
 import axios from "axios";
 
 type Comment = {
