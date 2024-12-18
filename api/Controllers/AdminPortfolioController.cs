@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Interfaces;
 using api.Models;
-using api.Dtos.Stock; // Import StockDto
+using api.Dtos.Stock;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,9 +63,8 @@ namespace api.Controllers
         public async Task<IActionResult> GetMostUsedStocks()
         {
             var users = await _userManager.Users.ToListAsync();
-            var stockUsageCount = new Dictionary<int, int>(); // Key: Stock Id, Value: Usage Count
+            var stockUsageCount = new Dictionary<int, int>();
 
-            // Count stock usage across all portfolios
             foreach (var user in users)
             {
                 var portfolio = await _portfolioRepo.GetUserPortfolio(user);
@@ -83,14 +82,12 @@ namespace api.Controllers
                 }
             }
 
-            // Sort the stocks by usage count (descending order)
             var mostUsedStockIds = stockUsageCount
                 .OrderByDescending(kv => kv.Value)
-                .Take(5) // Top 5 most used stocks
+                .Take(5)
                 .Select(kv => kv.Key)
                 .ToList();
 
-            // Fetch stock details for the top 5 most used stocks asynchronously
             var mostUsedStocks = new List<StockDto>();
             foreach (var stockId in mostUsedStockIds)
             {
