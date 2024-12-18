@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
-import Tile from "../../Components/AdminTile/AdminTile"; // Import the Tile component
-import AdminList from "../../Components/AdminList/AdminList"; // Import the AdminList component
-import ToDoList from "../../Components/ToDoList/ToDoList"; // Import the ToDoList component
-import { FaUser, FaFileAlt } from "react-icons/fa";
+import Tile from "../../Components/AdminTile/AdminTile";
+import AdminList from "../../Components/AdminList/AdminList";
+import ToDoList from "../../Components/ToDoList/ToDoList";
+import { FaUser, FaFileAlt, FaBox } from "react-icons/fa";
 import axios from "axios";
 
 type Props = {};
@@ -11,6 +11,7 @@ type Props = {};
 const AdminDashboard: React.FC<Props> = () => {
   const [userCount, setUserCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
+  const [stocksCount, setStocksCount] = useState<number>(0); // New state for stock count
   const [recentUsers, setRecentUsers] = useState<
     { id: number; name: string; email: string }[]
   >([]);
@@ -21,7 +22,7 @@ const AdminDashboard: React.FC<Props> = () => {
     { id: number; symbol: string; companyName: string }[]
   >([]);
 
-  // Fetch data for total users and comments
+  // Fetch data for total users, comments, and stocks count
   useEffect(() => {
     const fetchCounts = async () => {
       try {
@@ -36,6 +37,17 @@ const AdminDashboard: React.FC<Props> = () => {
           "http://localhost:5067/api/admin/comments"
         );
         setCommentCount(commentResponse.data.length); // Assuming the data is an array of comments
+
+        // Fetch portfolios and count the total number of stocks
+        const portfolioResponse = await axios.get(
+          "http://localhost:5067/api/admin/portfolio"
+        );
+        const portfolios = portfolioResponse.data;
+        const totalStocks = portfolios.reduce(
+          (acc: number, portfolio: any) => acc + portfolio.portfolio.length,
+          0
+        );
+        setStocksCount(totalStocks); // Set the total number of stocks across all portfolios
       } catch (error) {
         console.error("Error fetching counts", error);
       }
@@ -111,6 +123,12 @@ const AdminDashboard: React.FC<Props> = () => {
             title="Total Comments"
             value={commentCount.toString()}
             icon={<FaFileAlt />}
+          />
+          {/* New tile for total stocks in portfolios */}
+          <Tile
+            title="Total Stocks in Portfolios"
+            value={stocksCount.toString()}
+            icon={<FaBox />}
           />
         </div>
 
