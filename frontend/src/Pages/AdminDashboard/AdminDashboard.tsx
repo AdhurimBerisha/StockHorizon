@@ -3,7 +3,7 @@ import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
 import Tile from "../../Components/AdminTile/AdminTile";
 import AdminList from "../../Components/AdminList/AdminList";
 import ToDoList from "../../Components/ToDoList/ToDoList";
-import { FaUser, FaFileAlt, FaBox } from "react-icons/fa";
+import { FaUser, FaFileAlt, FaBox, FaTasks } from "react-icons/fa"; // Add FaTasks icon
 import axios from "axios";
 
 const AdminDashboard: React.FC = () => {
@@ -19,6 +19,7 @@ const AdminDashboard: React.FC = () => {
   const [mostUsedStocks, setMostUsedStocks] = useState<
     { id: number; symbol: string; companyName: string }[]
   >([]);
+  const [taskCount, setTaskCount] = useState<number>(0); // Track the number of tasks
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -118,6 +119,12 @@ const AdminDashboard: React.FC = () => {
             value={stocksCount.toString()}
             icon={<FaBox />}
           />
+          {/* Add the Tile for To-Do Count */}
+          <Tile
+            title="Total To-Do's"
+            value={taskCount.toString()}
+            icon={<FaTasks />}
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
@@ -127,7 +134,8 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1">
-          <ToDoList />
+          {/* Pass setTaskCount prop to update task count */}
+          <ToDoList setTaskCount={setTaskCount} />
         </div>
       </div>
     </div>
