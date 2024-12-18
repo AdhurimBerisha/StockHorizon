@@ -6,14 +6,12 @@ import ToDoList from "../../Components/ToDoList/ToDoList";
 import { FaUser, FaFileAlt, FaBox } from "react-icons/fa";
 import axios from "axios";
 
-type Props = {};
-
-const AdminDashboard: React.FC<Props> = () => {
+const AdminDashboard: React.FC = () => {
   const [userCount, setUserCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [stocksCount, setStocksCount] = useState<number>(0);
   const [recentUsers, setRecentUsers] = useState<
-    { id: number; name: string; email: string }[]
+    { id: number; userName: string; email: string }[]
   >([]);
   const [recentComments, setRecentComments] = useState<
     { id: number; title: string; content: string }[]
@@ -25,7 +23,6 @@ const AdminDashboard: React.FC<Props> = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        // Fetch total users count
         const userResponse = await axios.get(
           "http://localhost:5067/api/admin/users"
         );
