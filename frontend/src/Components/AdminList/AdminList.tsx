@@ -1,9 +1,7 @@
-import React from "react";
-
 type AdminListProps = {
   title: string;
   items: {
-    id: number;
+    id: string | number;
     userName?: string;
     email?: string;
     createdBy?: string;
@@ -20,27 +18,26 @@ const AdminList = ({ title, items }: AdminListProps) => {
       <ul>
         {items.map((item) => (
           <li key={item.id} className="border-b last:border-b-0 py-2">
-            {/* For Recent Users: Display email and username */}
-            {item.email && item.userName ? (
+            {item.userName ? (
               <>
-                <p className="text-gray-800 font-semibold">{item.email}</p>
-                <p className="text-gray-600 text-sm">{item.userName}</p>
+                <p className="text-gray-800 font-semibold">{item.userName}</p>
+                {item.email && (
+                  <p className="text-gray-600 text-sm">{item.email}</p>
+                )}
               </>
             ) : null}
 
-            {/* For Recent Comments: Display content and createdBy */}
-            {item.content ? (
+            {item.content && (
               <p className="text-gray-800 text-sm mt-2 font-semibold">
                 {item.content}
               </p>
-            ) : null}
+            )}
             {item.createdBy && item.content && (
               <p className="text-gray-500 text-xs mt-2">
                 Posted by: {item.createdBy}
               </p>
             )}
 
-            {/* For Most Used Stocks: Display symbol first, then companyName */}
             {item.symbol && item.companyName && (
               <>
                 <p className="text-gray-800 font-semibold">{item.symbol}</p>

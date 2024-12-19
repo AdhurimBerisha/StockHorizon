@@ -3,15 +3,15 @@ import AdminSidebar from "../../Components/AdminSidebar/AdminSidebar";
 import Tile from "../../Components/AdminTile/AdminTile";
 import AdminList from "../../Components/AdminList/AdminList";
 import ToDoList from "../../Components/ToDoList/ToDoList";
-import { FaUser, FaFileAlt, FaBox, FaTasks } from "react-icons/fa"; // Add FaTasks icon
+import { FaUser, FaFileAlt, FaBox, FaTasks } from "react-icons/fa";
 import axios from "axios";
 
 const AdminDashboard: React.FC = () => {
   const [userCount, setUserCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [stocksCount, setStocksCount] = useState<number>(0);
-  const [recentUsers, setRecentUsers] = useState<
-    { id: number; userName: string; email: string }[]
+  const [usersWithMostStocks, setUsersWithMostStocks] = useState<
+    { id: string; userName: string; portfolio: any[] }[]
   >([]);
   const [recentComments, setRecentComments] = useState<
     { id: number; title: string; content: string }[]
@@ -19,7 +19,12 @@ const AdminDashboard: React.FC = () => {
   const [mostUsedStocks, setMostUsedStocks] = useState<
     { id: number; symbol: string; companyName: string }[]
   >([]);
-  const [taskCount, setTaskCount] = useState<number>(0); // Track the number of tasks
+  const [taskCount, setTaskCount] = useState<number>(0);
+
+  type User = {
+    username: string;
+    portfolio: any[];
+  };
 
   useEffect(() => {
     const fetchCounts = async () => {
@@ -55,14 +60,15 @@ const AdminDashboard: React.FC = () => {
     const fetchRecentData = async () => {
       try {
         const usersResponse = await axios.get(
-          "http://localhost:5067/api/admin/users"
+          "http://localhost:5067/api/admin/portfolio/users-with-most-stocks"
         );
-        const sortedUsers = usersResponse.data.sort((a: any, b: any) => {
-          return (
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        });
-        setRecentUsers(sortedUsers.slice(0, 5));
+
+        const formattedUsers = usersResponse.data.map((user: User) => ({
+          id: user.username,
+          userName: user.username,
+          portfolio: user.portfolio,
+        }));
+        setUsersWithMostStocks(formattedUsers);
 
         const commentsResponse = await axios.get(
           "http://localhost:5067/api/admin/comments"
@@ -74,7 +80,10 @@ const AdminDashboard: React.FC = () => {
         });
         setRecentComments(sortedComments.slice(0, 5));
       } catch (error) {
-        console.error("Error fetching recent users and comments", error);
+        console.error(
+          "Error fetching users with most stocks and comments",
+          error
+        );
       }
     };
 
@@ -119,7 +128,6 @@ const AdminDashboard: React.FC = () => {
             value={stocksCount.toString()}
             icon={<FaBox />}
           />
-          {/* Add the Tile for To-Do Count */}
           <Tile
             title="Total To-Do's"
             value={taskCount.toString()}
@@ -128,13 +136,15 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          <AdminList title="Recent Users" items={recentUsers} />
-          <AdminList title="Recent Comments" items={recentComments} />
+          <AdminList
+            title="Users with Most Stocks"
+            items={usersWithMostStocks}
+          />
           <AdminList title="Most Used Stocks" items={mostUsedStocks} />
+          <AdminList title="Recent Comments" items={recentComments} />
         </div>
 
         <div className="grid grid-cols-1">
-          {/* Pass setTaskCount prop to update task count */}
           <ToDoList setTaskCount={setTaskCount} />
         </div>
       </div>

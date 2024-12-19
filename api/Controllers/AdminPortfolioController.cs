@@ -106,5 +106,36 @@ namespace api.Controllers
             return Ok(mostUsedStocks);
         }
 
+        [HttpGet("users-with-most-stocks")]
+        public async Task<IActionResult> GetUsersWithMostStocks()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var userPortfolios = new List<UserPortfolioDto>();
+
+            foreach (var user in users)
+            {
+                var portfolio = await _portfolioRepo.GetUserPortfolio(user);
+                var userPortfolioDto = new UserPortfolioDto
+                {
+                    Username = user.UserName,
+                    Portfolio = portfolio.Select(stock => new StockDto
+                    {
+                        Id = stock.Id,
+                        Symbol = stock.Symbol,
+                        CompanyName = stock.CompanyName
+                    }).ToList()
+                };
+
+                userPortfolios.Add(userPortfolioDto);
+            }
+
+            var sortedUserPortfolios = userPortfolios
+                .OrderByDescending(up => up.Portfolio.Count)
+                .Take(5)
+                .ToList();
+
+            return Ok(sortedUserPortfolios);
+        }
+
     }
 }

@@ -34,7 +34,6 @@ namespace api.Controllers
             _fmpService = fmpService;
         }
 
-        // Get all comments
         [HttpGet]
         public async Task<IActionResult> GetComments()
         {
@@ -43,27 +42,22 @@ namespace api.Controllers
 
             try
             {
-                // Create a default (empty) CommentQueryObject
                 var queryObject = new CommentQueryObject();
 
-                // Fetch all comments from the repository using the empty query object
                 var comments = await _commentRepo.GetAllAsync(queryObject);
 
-                // Map the comments to DTOs for the response
                 var commentDtos = comments.Select(s => s.ToCommentDto()).ToList();
 
-                return Ok(commentDtos); // Return the list of comments
+                return Ok(commentDtos);
             }
             catch (Exception ex)
             {
-                // Log the exception if necessary and return a server error response
                 return StatusCode(500, "Internal server error: " + ex.Message);
             }
         }
 
 
 
-        // Get comment by ID
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetCommentById([FromRoute] int id)
         {
@@ -80,7 +74,6 @@ namespace api.Controllers
             return Ok(comment.ToCommentDto());
         }
 
-        // Create comment for a stock symbol
         [HttpPost]
         [Route("{symbol:alpha}")]
         public async Task<IActionResult> Create([FromRoute] string symbol, [FromBody] CreateCommentDto commentDto)
@@ -103,8 +96,7 @@ namespace api.Controllers
                 }
             }
 
-            // Get the current user using the same logic as in CommentController
-            var username = User.GetUsername(); // Use the same extension method as in CommentController
+            var username = User.GetUsername();
             if (username == null)
             {
                 return Unauthorized("User is not authenticated.");
@@ -112,7 +104,6 @@ namespace api.Controllers
 
             var appUser = await _userManager.FindByNameAsync(username);
 
-            // Create the comment
             var commentModel = new Comment
             {
                 Title = commentDto.Title,
@@ -121,21 +112,17 @@ namespace api.Controllers
                 AppUserId = appUser.Id
             };
 
-            // Add the comment to the database
             await _commentRepo.CreateAsync(commentModel);
 
-            // Return the created comment
             return CreatedAtAction(nameof(GetCommentById), new { id = commentModel.Id }, commentModel.ToCommentDto());
         }
 
-        // Update comment by ID
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateComment([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateCommentDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Fetch the existing comment
             var comment = await _commentRepo.GetByIdAsync(id);
 
             if (comment == null)
@@ -143,11 +130,9 @@ namespace api.Controllers
                 return NotFound("Comment not found!");
             }
 
-            // Update the comment properties
             comment.Title = updateCommentDto.Title;
             comment.Content = updateCommentDto.Content;
 
-            // Save the updated comment to the database
             var updatedComment = await _commentRepo.UpdateAsync(id, comment);
 
             if (updatedComment == null)
@@ -158,7 +143,6 @@ namespace api.Controllers
             return Ok(updatedComment.ToCommentDto());
         }
 
-        // Delete comment by ID
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {

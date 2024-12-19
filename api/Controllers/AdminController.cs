@@ -17,7 +17,6 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
 
-        // Ensure only one constructor with dependencies
         public AdminController(UserManager<AppUser> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
@@ -30,7 +29,6 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Check if the username or email already exists
             var existingUser = await _userManager.FindByNameAsync(registerDto.Username);
             if (existingUser != null)
             {
@@ -43,7 +41,6 @@ namespace api.Controllers
                 return BadRequest("Email is already taken.");
             }
 
-            // Create the new user
             var appUser = new AppUser
             {
                 UserName = registerDto.Username,
@@ -54,13 +51,11 @@ namespace api.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            // Assign role from the DTO or default to "User"
             var role = string.IsNullOrEmpty(registerDto.Role) ? "User" : registerDto.Role;
             var roleResult = await _userManager.AddToRoleAsync(appUser, role);
             if (!roleResult.Succeeded)
                 return BadRequest(roleResult.Errors);
 
-            // Generate the token for the user
             var token = _tokenService.CreateToken(appUser);
 
             return Ok(new NewUserDto

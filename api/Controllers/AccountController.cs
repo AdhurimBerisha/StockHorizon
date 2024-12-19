@@ -31,15 +31,12 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Fetch user by username (case-insensitive)
             var user = await _userManager.FindByNameAsync(loginDto.Username.ToLower());
             if (user == null) return Unauthorized("Invalid username!");
 
-            // Verify password
             var result = await _signinManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded) return Unauthorized("Username or password incorrect");
 
-            // Fetch user roles
             var roles = await _userManager.GetRolesAsync(user);
 
             return Ok(new NewUserDto
@@ -67,7 +64,6 @@ namespace api.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            // Assign role from the DTO or default to "User"
             var role = string.IsNullOrEmpty(registerDto.Role) ? "User" : registerDto.Role;
             var roleResult = await _userManager.AddToRoleAsync(appUser, role);
             if (!roleResult.Succeeded)
