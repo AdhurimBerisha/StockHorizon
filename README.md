@@ -5,6 +5,7 @@ StockHorizon is a powerful financial application that lets you search for live s
 1.Clone the repository  
 git clone https://github.com/your-repo/StockHorizon.git
 cd StockHorizon
+
 2. Set Up the Backend (ASP.NET Core Web API & SQL Server)
 • Install .NET SDK and ensure SQL Server is running.
 • Update the database connection string in appsettings.json.
@@ -12,7 +13,8 @@ Apply database migrations:
 dotnet ef database update
 • Start the backend server:
 dotnet run
-3. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
+
+4. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
 • Navigate to the frontend directory:
 cd client
 • Install dependencies:
