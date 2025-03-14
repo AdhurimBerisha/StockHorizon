@@ -7,17 +7,29 @@ git clone https://github.com/your-repo/StockHorizon.git
 cd StockHorizon
 
 2. Set Up the Backend (ASP.NET Core Web API & SQL Server)
+
 • Install .NET SDK and ensure SQL Server is running.
+
 • Update the database connection string in appsettings.json.
+
 Apply database migrations:
+
 dotnet ef database update
+
 • Start the backend server:
+
 dotnet run
 
 4. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
+
 • Navigate to the frontend directory:
+
 cd client
+
 • Install dependencies:
+
 npm install
+
 • Start the frontend development server:
 npm run dev
+
