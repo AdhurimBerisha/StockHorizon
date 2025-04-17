@@ -20,7 +20,7 @@ dotnet ef database update
 
 dotnet run
 
-4. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
+## 3. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
 
 • Navigate to the frontend directory:
 
