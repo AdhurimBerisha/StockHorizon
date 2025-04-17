@@ -6,7 +6,7 @@ StockHorizon is a powerful financial application that lets you search for live s
 git clone https://github.com/your-repo/StockHorizon.git
 cd StockHorizon
 
-2. Set Up the Backend (ASP.NET Core Web API & SQL Server)
+## 2. Set Up the Backend (ASP.NET Core Web API & SQL Server)
 
 • Install .NET SDK and ensure SQL Server is running.
 
