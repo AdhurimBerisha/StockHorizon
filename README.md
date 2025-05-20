@@ -18,7 +18,7 @@ dotnet ef database update
 
 • Start the backend server:
 
-dotnet run
+dotnet watch run
 
 ## 3. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
 
