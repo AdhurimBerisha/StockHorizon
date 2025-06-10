@@ -53,12 +53,8 @@ StockHorizon is a powerful financial application that lets you search for live s
 This project requires a few environment variables to run properly.
 - For the **frontend**, create a `.env` file.
 
-### api `.env` variables include:
+### frontend `.env` variables include:
 
 - `REACT_APP_API_KEY` — your_react_api_key
 
-
-### client `.env` variables include:
-- `VITE_BACKEND_URL` — http://localhost:4000
-- `VITE_STRIPE_PUBLISHABLE_KEY` — your_stripe_publishable_key
 
