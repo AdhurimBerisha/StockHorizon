@@ -1,35 +1,64 @@
-# StockHorizon: Real-Time Stock Tracking & Portfolio Management
+# StockHorizon – Real-Time Stock Tracking & Portfolio Management
+
+![localhost_3000_](https://github.com/user-attachments/assets/26da3277-abfa-4198-b488-1d4b32ad55b9)
+
+
+
 StockHorizon is a powerful financial application that lets you search for live stock market data and seamlessly add stocks to your personalized portfolio. Built with ReactJS, TypeScript, and Tailwind CSS, the app delivers a smooth and responsive user experience. The backend is powered by ASP.NET Core Web API and SQL Server, ensuring high performance and reliability for managing stock data and user portfolios. Whether you're tracking real-time prices or managing your investments, StockHorizon provides the tools you need to stay ahead in the market.
 
-# Installation  
-## 1.Clone the repository  
-git clone https://github.com/your-repo/StockHorizon.git
-cd StockHorizon
 
-## 2. Set Up the Backend (ASP.NET Core Web API & SQL Server)
+## Features
 
-• Install .NET SDK and ensure SQL Server is running.
+- Search live stock market
+- Review past stock history
+- Create your own portfolio    
+- Admin control panel for managing users, stocks, and portfolios    
 
-• Update the database connection string in appsettings.json.
 
-Apply database migrations:
+## Tech Stack
 
-dotnet ef database update
+- **Frontend:** React, Typescript, Tailwind CSS  
+- **Backend:**   ASP.NET Core Web API
+- **Databases:** Microsoft SQL Server  
 
-• Start the backend server:
+## Installation
 
-dotnet watch run
+1. Clone the repository  
+    ```bash
+    git clone https://github.com/AdhurimBerisha/StockHorizon.git
+    ```
 
-## 3. Set Up the Frontend (ReactJS, TypeScript, Tailwind CSS)
+2. Install dependencies for frontend and backend  
+    ```bash
+    cd client
+    npm install
 
-• Navigate to the frontend directory:
+    cd api
+    npm install
+    ```
 
-cd client
+3. Set up environment variables (see below)
 
-• Install dependencies:
+4. Run the development servers  
+    ```bash
+    # api
+    dotnet watch run
 
-npm install
+    # frontend
+    npm start
+    ```
 
-• Start the frontend development server:
-npm run dev
+## Environment Variables
+
+This project requires a few environment variables to run properly.
+- For the **frontend**, create a `.env` file.
+
+### api `.env` variables include:
+
+- `REACT_APP_API_KEY` — your_react_api_key
+
+
+### client `.env` variables include:
+- `VITE_BACKEND_URL` — http://localhost:4000
+- `VITE_STRIPE_PUBLISHABLE_KEY` — your_stripe_publishable_key
 
